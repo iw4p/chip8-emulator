@@ -29,7 +29,7 @@ const FONTSET: [u8; FONTSET_SIZE] = [
 ];
 
 pub struct Emu {
-    pc: u16,
+    pc: u16, // Program Counter
     ram: [u8; RAM_SIZE],
     screen: [bool; SCREEN_WIDTH * SCREEN_HEIGHT],
     v_reg: [u8; NUM_REGS],
@@ -82,4 +82,30 @@ impl Emu {
         self.st = 0;
         self.ram[..FONTSET_SIZE].copy_from_slice(&FONTSET);
     }
+
+    pub fn tick(&mut self) {
+        // Fetch
+        let op = self.fetch();
+        // Decode & Execute
+        self.execute(op);
+    }
+
+    fn fetch(&mut self) -> u16 {
+        let higher_byte = self.ram[self.pc as usize] as u16;
+        let lower_byte = self.ram[(self.pc + 1) as usize] as u16;
+        let op = (higher_byte << 8) | lower_byte;
+        self.pc += 2;
+        op
+    }
+
+    fn execute(&mut self, op: u16) {
+        let digit1 = (op & 0xF000) >> 12;
+        let digit2 = (op & 0x0F00) >> 8;
+        let digit3 = (op & 0x00F0) >> 4;
+        let digit4 = op & 0x000F;
+        match (digit1, digit2, digit3, digit4) {
+            (_, _, _, _) => unimplemented!("Unimplemented opcode: {}", op),
+        }
+    }
+
 }
