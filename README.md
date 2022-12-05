@@ -11,5 +11,17 @@ wikipedia: CHIP-8 is an interpreted programming language, developed by Joseph We
 This is an emulator which can run on browser (Wasm - WebAssembly) and as a program.
 With this emulator you can run old chip8 games.
 
+## How to run it?
+For Wasm you need http server which can be python or npm or vscode extentions.
+Inside web directory:
+```
+python3 -m http.server
+```
+
+For program, insde desktop directory:
+```
+cargo run /ChangeThisToPathOfYourGameFiles/c8games/MERLIN
+```
+
 Based on:
 https://github.com/aquova/chip8-book
